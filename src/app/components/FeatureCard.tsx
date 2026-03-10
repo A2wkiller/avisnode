@@ -1,0 +1,189 @@
+import { Zap, Shield, Clock, Headset, Cpu, Globe } from "lucide-react";
+import { motion } from "motion/react";
+import clsx from "clsx";
+import { ElementType } from "react";
+import { spring, viewportDefaults } from "../lib/animations";
+
+function FeatureCard({
+  icon: Icon,
+  title,
+  description,
+  isHighlighted = false,
+  index = 0,
+}: {
+  icon: ElementType;
+  title: string;
+  description: string;
+  isHighlighted?: boolean;
+  index?: number;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 32 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={viewportDefaults}
+      transition={{ ...spring.gentle, delay: index * 0.08 }}
+      whileHover={{ y: -8, scale: 1.02 }}
+      className={clsx(
+        "relative group overflow-hidden rounded-2xl p-6 transition-colors duration-800",
+        "backdrop-blur-xl bg-gradient-to-br",
+        isHighlighted
+          ? "from-teal-500/10 to-teal-600/5 border-2 border-teal-500/30 shadow-[0_8px_32px_rgba(20,184,166,0.15)]"
+          : "from-foreground/5 to-foreground/[0.02] border border-border",
+      )}
+    >
+      {/* Highlighted card sparkle effects */}
+      {isHighlighted && (
+        <>
+          {/* Top-left sparkle */}
+          <div className="absolute top-0 left-0 w-2 h-2">
+            <div className="absolute top-0 left-0 w-full h-full bg-teal-500 dark:bg-teal-400 rounded-full animate-ping" />
+            <div className="absolute top-0 left-0 w-full h-full bg-teal-500 dark:bg-teal-400 rounded-full" />
+          </div>
+
+          {/* Top-right sparkle */}
+          <div className="absolute top-0 right-0 w-2 h-2">
+            <div
+              className="absolute top-0 right-0 w-full h-full bg-teal-500 dark:bg-teal-400 rounded-full animate-ping"
+              style={{ animationDelay: "0.3s" }}
+            />
+            <div className="absolute top-0 right-0 w-full h-full bg-teal-500 dark:bg-teal-400 rounded-full" />
+          </div>
+
+          {/* Bottom-left sparkle */}
+          <div className="absolute bottom-0 left-0 w-2 h-2">
+            <div
+              className="absolute bottom-0 left-0 w-full h-full bg-teal-500 dark:bg-teal-400 rounded-full animate-ping"
+              style={{ animationDelay: "0.6s" }}
+            />
+            <div className="absolute bottom-0 left-0 w-full h-full bg-teal-500 dark:bg-teal-400 rounded-full" />
+          </div>
+
+          {/* Bottom-right sparkle */}
+          <div className="absolute bottom-0 right-0 w-2 h-2">
+            <div
+              className="absolute bottom-0 right-0 w-full h-full bg-teal-500 dark:bg-teal-400 rounded-full animate-ping"
+              style={{ animationDelay: "0.9s" }}
+            />
+            <div className="absolute bottom-0 right-0 w-full h-full bg-teal-500 dark:bg-teal-400 rounded-full" />
+          </div>
+        </>
+      )}
+
+      {/* Animated gradient overlay on hover */}
+      <div className="absolute inset-0 bg-gradient-to-br from-teal-500/0 to-teal-600/0 group-hover:from-teal-500/5 group-hover:to-teal-600/10 transition-all duration-500" />
+
+      {/* Content */}
+      <div className="relative z-10">
+        {/* Icon Container */}
+        <div
+          className={clsx(
+            "w-14 h-14 rounded-xl flex items-center justify-center mb-4",
+            "transition-all duration-300",
+            isHighlighted
+              ? "bg-teal-500/20 border border-teal-500/30 group-hover:bg-teal-500 group-hover:border-teal-400 shadow-[0_4px_20px_rgba(20,184,166,0.3)]"
+              : "bg-foreground/5 border border-border group-hover:bg-teal-500/20 group-hover:border-teal-500/30",
+          )}
+        >
+          <Icon
+            className={clsx(
+              "w-7 h-7 transition-all duration-300",
+              isHighlighted
+                ? "text-teal-600 dark:text-teal-400 group-hover:text-white"
+                : "text-foreground/70 group-hover:text-teal-600 dark:group-hover:text-teal-400",
+            )}
+          />
+        </div>
+
+        {/* Title */}
+        <h3
+          className={clsx(
+            "text-xl font-bold mb-2 transition-colors duration-800",
+            isHighlighted ? "text-teal-600 dark:text-teal-300" : "text-foreground",
+          )}
+        >
+          {title}
+        </h3>
+
+        {/* Description */}
+        <p className="text-muted-foreground text-sm leading-relaxed transition-colors duration-800">{description}</p>
+      </div>
+
+      {/* Shine effect on hover */}
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 overflow-hidden rounded-2xl">
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-foreground/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+      </div>
+    </motion.div>
+  );
+}
+
+export function FeaturesGrid() {
+  const features = [
+    {
+      icon: Zap,
+      title: "Instant Setup",
+      description:
+        "Get your server up and running in seconds. No complex configurations.",
+      highlighted: false,
+    },
+    {
+      icon: Shield,
+      title: "DDoS Protection",
+      description:
+        "Enterprise-grade protection keeps your server safe from malicious attacks.",
+      highlighted: true,
+    },
+    {
+      icon: Clock,
+      title: "99.9% Uptime",
+      description:
+        "Our redundant infrastructure ensures your server stays online.",
+      highlighted: false,
+    },
+    {
+      icon: Headset,
+      title: "24/7 Support",
+      description:
+        "Expert support team available round the clock to help with any issues.",
+      highlighted: false,
+    },
+    {
+      icon: Cpu,
+      title: "Powerful Hardware",
+      description:
+        "High-performance NVMe SSDs and latest CPUs for lag-free gaming.",
+      highlighted: false,
+    },
+    {
+      icon: Globe,
+      title: "Global Locations",
+      description:
+        "Multiple data centers worldwide to ensure low latency for all players.",
+      highlighted: false,
+    },
+  ];
+
+  return (
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={viewportDefaults}
+      variants={{
+        hidden: {},
+        visible: { transition: { staggerChildren: 0.08 } },
+      }}
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+    >
+      {features.map((feature, index) => (
+        <FeatureCard
+          key={index}
+          icon={feature.icon}
+          title={feature.title}
+          description={feature.description}
+          isHighlighted={feature.highlighted}
+          index={index}
+        />
+      ))}
+    </motion.div>
+  );
+}
