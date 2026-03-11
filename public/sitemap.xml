@@ -7,57 +7,75 @@
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://avixnode.com/games</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://avixnode.com/dedicated</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://avixnode.com/shared</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://avixnode.com/privacy</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://avixnode.com/tos</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://avixnode.com/cart</loc>
+    <changefreq>always</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <!-- Game Specific Pages -->
+  <url>
     <loc>https://avixnode.com/games/Minecraft</loc>
+    <priority>0.9</priority>
     <image:image>
       <image:loc>https://avixnode.com/assets/minecraft.png</image:loc>
       <image:title>Minecraft Server Hosting</image:title>
-      <image:caption>High-performance Minecraft server hosting at AvixNode</image:caption>
-      <image:license>https://avixnode.com/terms</image:license>
     </image:image>
   </url>
   <url>
     <loc>https://avixnode.com/games/Rust</loc>
+    <priority>0.9</priority>
     <image:image>
       <image:loc>https://avixnode.com/assets/Rust-Logo.jpg</image:loc>
       <image:title>Rust Server Hosting</image:title>
-      <image:caption>High-performance Rust server hosting at AvixNode</image:caption>
-      <image:license>https://avixnode.com/terms</image:license>
     </image:image>
   </url>
   <url>
     <loc>https://avixnode.com/games/ARK</loc>
+    <priority>0.8</priority>
     <image:image>
       <image:loc>https://avixnode.com/assets/ark.png</image:loc>
-      <image:title>Ark: SE Server Hosting</image:title>
-      <image:caption>High-performance Ark: SE server hosting at AvixNode</image:caption>
-      <image:license>https://avixnode.com/terms</image:license>
+      <image:title>ARK: Survival Evolved Hosting</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://avixnode.com/games/Valheim</loc>
+    <priority>0.8</priority>
     <image:image>
       <image:loc>https://avixnode.com/assets/valheim-logo.png</image:loc>
       <image:title>Valheim Server Hosting</image:title>
-      <image:caption>High-performance Valheim server hosting at AvixNode</image:caption>
-      <image:license>https://avixnode.com/terms</image:license>
     </image:image>
   </url>
   <url>
     <loc>https://avixnode.com/games/GarrysMod</loc>
+    <priority>0.7</priority>
     <image:image>
       <image:loc>https://avixnode.com/assets/garrysmod.png</image:loc>
       <image:title>Garry's Mod Server Hosting</image:title>
-      <image:caption>High-performance Garry's Mod server hosting at AvixNode</image:caption>
-      <image:license>https://avixnode.com/terms</image:license>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://avixnode.com/games/CS2</loc>
-    <image:image>
-      <image:loc>https://avixnode.com/assets/csgo.png</image:loc>
-      <image:title>CS:GO Server Hosting</image:title>
-      <image:caption>High-performance CS:GO server hosting at AvixNode</image:caption>
-      <image:license>https://avixnode.com/terms</image:license>
     </image:image>
   </url>
 </urlset>

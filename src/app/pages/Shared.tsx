@@ -5,6 +5,8 @@ import { useState } from "react";
 
 import { Testimonials } from "../components/Testimonials";
 import { FAQ } from "../components/FAQ";
+import { SEO } from "../components/SEO";
+import { SchemaOrg } from "../components/SchemaOrg";
 import { CountdownTimer } from "../components/ui/CountdownTimer";
 import { assets } from "../assets";
 import { toast } from "sonner";
@@ -128,15 +130,25 @@ export default function Shared() {
   ];
 
   return (
-    <div className="bg-background min-h-screen pt-20 transition-colors duration-800">
+    <div className="bg-background min-h-screen pt-16 md:pt-20 transition-colors duration-800">
+      <SEO 
+        title="VPS Hosting Plans"
+        description="High-performance virtual private servers with full root access, SSD storage, and instant deployment for any application."
+        keywords="vps hosting, virtual private server, cloud hosting, linux vps, windows vps, avixnode"
+      />
+      <SchemaOrg 
+        type="SoftwareApplication"
+        name="VPS Hosting Plans"
+        description="High-performance virtual private servers with full root access and instant deployment."
+      />
       {/* Hero / Pricing Section */}
-      <section className="py-20 px-6 max-w-7xl mx-auto relative">
-        <div className="text-center mb-16">
+      <section className="py-16 md:py-20 px-4 md:px-6 max-w-7xl mx-auto relative">
+        <div className="text-center mb-10 md:mb-16">
           <motion.h1
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={spring.gentle}
-            className="text-4xl md:text-5xl font-bold text-foreground mb-4 uppercase tracking-tight transition-colors duration-800"
+            className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4 uppercase tracking-tight transition-colors duration-800"
           >
             VPS HOSTING PLANS
           </motion.h1>
@@ -144,7 +156,7 @@ export default function Shared() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ ...spring.gentle, delay: 0.08 }}
-            className="text-muted-foreground max-w-2xl mx-auto text-lg transition-colors duration-800"
+            className="text-muted-foreground max-w-2xl mx-auto text-base md:text-lg transition-colors duration-800"
           >
             High-performance virtual private servers with full root access, SSD
             storage, and instant deployment.
@@ -152,14 +164,14 @@ export default function Shared() {
         </div>
 
         {/* Filters */}
-        <div className="flex flex-col items-center gap-6 mb-12">
+        <div className="flex flex-col items-center gap-4 md:gap-6 mb-10 md:mb-12">
           {/* Category Tabs */}
-          <div className="bg-secondary p-1 rounded-full flex gap-1 border border-border transition-colors duration-800">
+          <div className="bg-secondary p-1 rounded-full flex gap-1 border border-border transition-colors duration-800 flex-wrap justify-center">
             {["Budget", "Performance", "Enterprise"].map((cat) => (
               <button
                 key={cat}
                 onClick={() => setCategory(cat.toLowerCase())}
-                className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${category === cat.toLowerCase() ? "bg-teal-500 text-white dark:text-black shadow-lg shadow-teal-500/20" : "text-muted-foreground hover:text-foreground hover:bg-foreground/5"}`}
+                className={`px-4 sm:px-6 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all !min-h-0 !min-w-0 ${category === cat.toLowerCase() ? "bg-teal-500 text-white dark:text-black shadow-lg shadow-teal-500/20" : "text-muted-foreground hover:text-foreground hover:bg-foreground/5"}`}
               >
                 {cat}
               </button>
@@ -167,25 +179,25 @@ export default function Shared() {
           </div>
 
           {/* Secondary Filters */}
-          <div className="flex flex-wrap items-center justify-center gap-4">
+          <div className="flex flex-wrap items-center justify-center gap-3 md:gap-4">
             <div className="flex items-center bg-secondary rounded-full border border-border px-2 py-1 transition-colors duration-800">
               <button
                 onClick={() => setCpuFilter("all")}
-                className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${cpuFilter === "all" ? "bg-teal-500 text-white dark:text-black" : "text-muted-foreground/40 hover:text-foreground"}`}
+                className={`px-3 sm:px-4 py-1.5 rounded-full text-[10px] sm:text-xs font-bold transition-all !min-h-0 !min-w-0 ${cpuFilter === "all" ? "bg-teal-500 text-white dark:text-black" : "text-muted-foreground/40 hover:text-foreground"}`}
               >
                 All
               </button>
               <span className="text-border mx-1">-</span>
               <button
                 onClick={() => setCpuFilter("amd")}
-                className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${cpuFilter === "amd" ? "bg-teal-500 text-white dark:text-black" : "text-muted-foreground/40 hover:text-foreground"}`}
+                className={`px-3 sm:px-4 py-1.5 rounded-full text-[10px] sm:text-xs font-bold transition-all !min-h-0 !min-w-0 ${cpuFilter === "amd" ? "bg-teal-500 text-white dark:text-black" : "text-muted-foreground/40 hover:text-foreground"}`}
               >
                 AMD
               </button>
               <span className="text-border mx-1">-</span>
               <button
                 onClick={() => setCpuFilter("intel")}
-                className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${cpuFilter === "intel" ? "bg-teal-500 text-white dark:text-black" : "text-muted-foreground/40 hover:text-foreground"}`}
+                className={`px-3 sm:px-4 py-1.5 rounded-full text-[10px] sm:text-xs font-bold transition-all !min-h-0 !min-w-0 ${cpuFilter === "intel" ? "bg-teal-500 text-white dark:text-black" : "text-muted-foreground/40 hover:text-foreground"}`}
               >
                 Intel
               </button>
@@ -194,14 +206,14 @@ export default function Shared() {
             <div className="flex items-center bg-secondary rounded-full border border-border px-2 py-1 transition-colors duration-800">
               <button
                 onClick={() => setLocationFilter("in")}
-                className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all ${locationFilter === "in" ? "bg-teal-500 text-white dark:text-black" : "text-muted-foreground/40 hover:text-foreground"}`}
+                className={`px-3 py-1.5 rounded-full text-[10px] sm:text-xs font-bold transition-all !min-h-0 !min-w-0 ${locationFilter === "in" ? "bg-teal-500 text-white dark:text-black" : "text-muted-foreground/40 hover:text-foreground"}`}
               >
                 IN
               </button>
               <span className="text-border mx-1">-</span>
               <button
                 onClick={() => setLocationFilter("sg")}
-                className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all ${locationFilter === "sg" ? "bg-teal-500 text-white dark:text-black" : "text-muted-foreground/40 hover:text-foreground"}`}
+                className={`px-3 py-1.5 rounded-full text-[10px] sm:text-xs font-bold transition-all !min-h-0 !min-w-0 ${locationFilter === "sg" ? "bg-teal-500 text-white dark:text-black" : "text-muted-foreground/40 hover:text-foreground"}`}
               >
                 SG
               </button>
@@ -210,7 +222,7 @@ export default function Shared() {
         </div>
 
         {/* Pricing Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-20 px-4 sm:px-0">
           {plans.map((plan, i) => (
             <motion.div
               key={i}

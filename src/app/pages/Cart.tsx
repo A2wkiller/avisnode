@@ -1,24 +1,22 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
-  ShoppingCart,
-  Trash2,
+  ArrowRight,
   Plus,
   Minus,
-  ArrowRight,
-  Tag,
-  Gift,
-  Lock,
-  Sparkles,
+  Trash2,
   TrendingUp,
   Package,
   Zap,
-  X,
-  CheckCircle2
+  CheckCircle2,
+  ShoppingCart,
+  Lock,
+  Sparkles
 } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
 import { assets } from '../assets';
+import { SEO } from '../components/SEO';
 
 interface CartItem {
   id: string;
@@ -30,33 +28,17 @@ interface CartItem {
   features?: string[];
 }
 
-interface CouponCode {
-  code: string;
-  discount: number;
-  description: string;
-}
-
-export default function ModernCart() {
+export default function Cart() {
   const navigate = useNavigate();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [couponCode, setCouponCode] = useState('');
-  const [appliedCoupon, setAppliedCoupon] = useState<CouponCode | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [showCouponList, setShowCouponList] = useState(false);
-
-  // Available coupons
-  const availableCoupons: CouponCode[] = [
-    { code: 'WELCOME10', discount: 10, description: 'New customer discount' },
-    { code: 'SUMMER25', discount: 25, description: 'Summer special' },
-    { code: 'GAME50', discount: 50, description: 'Half-price gaming' },
-  ];
 
   // Load cart from localStorage
   useEffect(() => {
     const savedCart = JSON.parse(localStorage.getItem('avixnode_cart') || '[]');
     
     // Group items by name and add quantity
-    const groupedCart = savedCart.reduce((acc: CartItem[], item: any) => {
+    const groupedCart = savedCart.reduce((acc: CartItem[], item: CartItem) => {
       const existing = acc.find(i => i.name === item.name);
       if (existing) {
         existing.quantity += 1;
@@ -102,25 +84,6 @@ export default function ModernCart() {
     setCartItems(items => items.filter(item => item.id !== itemId));
   };
 
-  // Apply coupon
-  const applyCoupon = (code: string) => {
-    const coupon = availableCoupons.find(c => c.code === code.toUpperCase());
-    if (coupon) {
-      setAppliedCoupon(coupon);
-      setCouponCode('');
-      setShowCouponList(false);
-      toast.success(`Coupon ${coupon.code} applied! ${coupon.discount}% off`);
-    } else {
-      toast.error('Invalid coupon code');
-    }
-  };
-
-  // Remove coupon
-  const removeCoupon = () => {
-    setAppliedCoupon(null);
-    toast.info('Coupon removed');
-  };
-
   // Calculate totals
   const calculateSubtotal = () => {
     return cartItems.reduce((total, item) => {
@@ -130,8 +93,7 @@ export default function ModernCart() {
   };
 
   const subtotal = calculateSubtotal();
-  const discountAmount = appliedCoupon ? subtotal * (appliedCoupon.discount / 100) : 0;
-  const total = subtotal - discountAmount;
+  const total = subtotal;
 
   // Redirect to Paymenter
   const handleCheckout = async () => {
@@ -157,6 +119,10 @@ export default function ModernCart() {
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden transition-colors duration-800">
+      <SEO 
+        title="Your Shopping Cart"
+        description="Review your game server hosting items and proceed to checkout. Secure and instant deployment at AvixNode."
+      />
       {/* Animated Background Gradient */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl animate-pulse" />
@@ -169,37 +135,37 @@ export default function ModernCart() {
         backgroundRepeat: 'repeat',
       }} />
 
-      <div className="relative z-10 py-24 px-6">
+      <div className="relative z-10 py-16 md:py-24 px-4 md:px-6">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center mb-16"
+            className="text-center mb-10 md:mb-16"
           >
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ type: "spring", delay: 0.2 }}
-              className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-teal-500/20 to-purple-500/20 border border-teal-500/30 mb-6"
+              className="inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br from-teal-500/20 to-purple-500/20 border border-teal-500/30 mb-4 md:mb-6"
             >
-              <ShoppingCart className="w-10 h-10 text-teal-500 dark:text-teal-400" />
+              <ShoppingCart className="w-8 h-8 md:w-10 md:h-10 text-teal-500 dark:text-teal-400" />
             </motion.div>
             
-            <h1 className="text-5xl md:text-6xl font-bold mb-4">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4">
               <span className="bg-gradient-to-r from-foreground via-teal-500 to-foreground bg-clip-text text-transparent transition-colors duration-800">
                 Your Cart
               </span>
             </h1>
             
-            <p className="text-muted-foreground text-lg transition-colors duration-800">
+            <p className="text-muted-foreground text-base md:text-lg transition-colors duration-800">
               {cartItems.length} {cartItems.length === 1 ? 'server' : 'servers'} ready to deploy
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
             {/* Cart Items - Left Column (2/3 width) */}
-            <div className="lg:col-span-2 space-y-6">
+            <div className="lg:col-span-2 space-y-4 md:space-y-6">
               <AnimatePresence mode="popLayout">
                 {cartItems.length === 0 ? (
                   // Empty Cart State
@@ -209,7 +175,7 @@ export default function ModernCart() {
                     exit={{ opacity: 0, scale: 0.9 }}
                     className="relative group"
                   >
-                    <div className="relative rounded-3xl border border-border bg-card backdrop-blur-xl p-16 text-center overflow-hidden transition-colors duration-800">
+                    <div className="relative rounded-2xl md:rounded-3xl border border-border bg-card backdrop-blur-xl p-8 md:p-16 text-center overflow-hidden transition-colors duration-800">
                       <div className="relative z-10">
                         <motion.div
                           animate={{
@@ -221,15 +187,15 @@ export default function ModernCart() {
                             repeat: Infinity,
                             ease: "easeInOut"
                           }}
-                          className="w-32 h-32 mx-auto mb-8 rounded-full bg-gradient-to-br from-teal-500/10 to-purple-500/10 border border-teal-500/20 flex items-center justify-center"
+                          className="w-24 h-24 md:w-32 md:h-32 mx-auto mb-6 md:mb-8 rounded-full bg-gradient-to-br from-teal-500/10 to-purple-500/10 border border-teal-500/20 flex items-center justify-center"
                         >
-                          <Package className="w-16 h-16 text-teal-500 dark:text-teal-400/50" />
+                          <Package className="w-12 h-12 md:w-16 md:h-16 text-teal-500 dark:text-teal-400/50" />
                         </motion.div>
                         
-                        <h3 className="text-3xl font-bold text-foreground mb-4 transition-colors duration-800">
+                        <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4 transition-colors duration-800">
                           Your cart is empty
                         </h3>
-                        <p className="text-muted-foreground mb-8 max-w-md mx-auto transition-colors duration-800">
+                        <p className="text-muted-foreground text-sm md:text-base mb-8 max-w-md mx-auto transition-colors duration-800 px-4">
                           Looks like you haven't added any game servers yet.
                           Let's get you started with premium hosting!
                         </p>
@@ -238,11 +204,11 @@ export default function ModernCart() {
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                           onClick={() => navigate('/games')}
-                          className="group inline-flex items-center gap-3 px-8 py-4 rounded-full bg-gradient-to-r from-teal-600 to-teal-500 text-white font-bold shadow-lg shadow-teal-500/25 hover:shadow-teal-500/40 transition-all"
+                          className="group inline-flex items-center gap-3 px-6 md:px-8 py-3 md:py-4 rounded-full bg-gradient-to-r from-teal-600 to-teal-500 text-white font-bold shadow-lg shadow-teal-500/25 hover:shadow-teal-500/40 transition-all !min-h-0 !min-w-0"
                         >
-                          <Sparkles className="w-5 h-5" />
+                          <Sparkles className="w-4 h-4 md:w-5 md:h-5" />
                           Browse Game Servers
-                          <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                          <ArrowRight className="w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform" />
                         </motion.button>
                       </div>
                     </div>
@@ -262,7 +228,7 @@ export default function ModernCart() {
                       }}
                       className="relative group"
                     >
-                      <div className="relative rounded-2xl border border-border bg-card backdrop-blur-xl overflow-hidden transition-colors duration-800">
+                      <div className="relative rounded-xl md:rounded-2xl border border-border bg-card backdrop-blur-xl overflow-hidden transition-colors duration-800">
                         <motion.div
                           className="absolute inset-0 bg-gradient-to-r from-transparent via-foreground/5 to-transparent"
                           initial={{ x: '-100%' }}
@@ -270,11 +236,11 @@ export default function ModernCart() {
                           transition={{ duration: 0.6, ease: "easeInOut" }}
                         />
                         
-                        <div className="relative z-10 p-6">
-                          <div className="flex items-start gap-6">
+                        <div className="relative z-10 p-4 sm:p-6">
+                          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 text-center sm:text-left">
                             <motion.div
                               whileHover={{ scale: 1.1, rotate: 5 }}
-                              className="flex-shrink-0 w-20 h-20 rounded-xl bg-gradient-to-br from-teal-500/20 to-purple-500/20 border border-teal-500/30 p-2 backdrop-blur-sm"
+                              className="flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-gradient-to-br from-teal-500/20 to-purple-500/20 border border-teal-500/30 p-2 backdrop-blur-sm"
                             >
                               <img
                                 src={item.icon || assets.imgMinecraft}
@@ -283,13 +249,13 @@ export default function ModernCart() {
                               />
                             </motion.div>
                             
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-start justify-between mb-3">
-                                <div>
-                                  <h3 className="text-xl font-bold text-foreground mb-1 transition-colors duration-800">
+                            <div className="flex-1 min-w-0 w-full">
+                              <div className="flex items-start justify-between mb-3 gap-2">
+                                <div className="min-w-0 flex-1">
+                                  <h3 className="text-lg sm:text-xl font-bold text-foreground mb-1 truncate transition-colors duration-800">
                                     {item.name}
                                   </h3>
-                                  <p className="text-muted-foreground text-sm transition-colors duration-800">
+                                  <p className="text-muted-foreground text-xs sm:text-sm transition-colors duration-800">
                                     Game Server Hosting
                                   </p>
                                 </div>
@@ -298,42 +264,42 @@ export default function ModernCart() {
                                   whileHover={{ scale: 1.1, rotate: 90 }}
                                   whileTap={{ scale: 0.9 }}
                                   onClick={() => removeItem(item.id)}
-                                  className="flex-shrink-0 w-10 h-10 rounded-lg bg-red-500/10 border border-red-500/20 text-red-500 dark:text-red-400 hover:bg-red-500/20 hover:border-red-500/30 transition-all flex items-center justify-center"
+                                  className="flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-red-500/10 border border-red-500/20 text-red-500 dark:text-red-400 hover:bg-red-500/20 hover:border-red-500/30 transition-all flex items-center justify-center !min-h-0 !min-w-0"
                                 >
-                                  <Trash2 className="w-5 h-5" />
+                                  <Trash2 className="w-4 h-4 sm:w-5 sm:h-5" />
                                 </motion.button>
                               </div>
 
-                              <div className="flex flex-wrap gap-2 mb-4">
+                              <div className="flex flex-wrap justify-center sm:justify-start gap-1.5 sm:gap-2 mb-4">
                                 {item.features?.slice(0, 3).map((feature, idx) => (
                                   <span
                                     key={idx}
-                                    className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-600 dark:text-teal-400 text-xs font-medium"
+                                    className="inline-flex items-center gap-1 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-600 dark:text-teal-400 text-[10px] sm:text-xs font-medium"
                                   >
-                                    <CheckCircle2 className="w-3 h-3" />
+                                    <CheckCircle2 className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
                                     {feature}
                                   </span>
                                 ))}
                               </div>
                               
-                              <div className="flex items-center justify-between">
+                              <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                                 <div className="flex items-center gap-3">
-                                  <span className="text-muted-foreground text-sm font-medium transition-colors duration-800">Quantity:</span>
+                                  <span className="text-muted-foreground text-xs sm:text-sm font-medium transition-colors duration-800">Quantity:</span>
                                   <div className="flex items-center gap-2">
                                     <motion.button
                                       whileHover={{ scale: 1.1 }}
                                       whileTap={{ scale: 0.9 }}
                                       onClick={() => updateQuantity(item.id, -1)}
-                                      className="w-8 h-8 rounded-lg bg-foreground/5 border border-border text-foreground hover:bg-teal-500/20 hover:border-teal-500/30 transition-all flex items-center justify-center"
+                                      className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-foreground/5 border border-border text-foreground hover:bg-teal-500/20 hover:border-teal-500/30 transition-all flex items-center justify-center !min-h-0 !min-w-0"
                                     >
-                                      <Minus className="w-4 h-4" />
+                                      <Minus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                                     </motion.button>
                                     
                                     <motion.span
                                       key={item.quantity}
                                       initial={{ scale: 1.2, color: '#14b8a6' }}
                                       animate={{ scale: 1, color: 'currentColor' }}
-                                      className="text-foreground font-bold text-lg min-w-[2rem] text-center transition-colors duration-800"
+                                      className="text-foreground font-bold text-base sm:text-lg min-w-[1.5rem] sm:min-w-[2rem] text-center transition-colors duration-800"
                                     >
                                       {item.quantity}
                                     </motion.span>
@@ -342,18 +308,18 @@ export default function ModernCart() {
                                       whileHover={{ scale: 1.1 }}
                                       whileTap={{ scale: 0.9 }}
                                       onClick={() => updateQuantity(item.id, 1)}
-                                      className="w-8 h-8 rounded-lg bg-foreground/5 border border-border text-foreground hover:bg-teal-500/20 hover:border-teal-500/30 transition-all flex items-center justify-center"
+                                      className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-foreground/5 border border-border text-foreground hover:bg-teal-500/20 hover:border-teal-500/30 transition-all flex items-center justify-center !min-h-0 !min-w-0"
                                     >
-                                      <Plus className="w-4 h-4" />
+                                      <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                                     </motion.button>
                                   </div>
                                 </div>
                                 
-                                <div className="text-right">
-                                  <div className="text-2xl font-bold text-transparent bg-gradient-to-r from-teal-500 to-purple-500 bg-clip-text">
+                                <div className="text-center sm:text-right">
+                                  <div className="text-xl sm:text-2xl font-bold text-transparent bg-gradient-to-r from-teal-500 to-purple-500 bg-clip-text">
                                     ₹{(parseFloat(item.price.replace('₹', '').replace(',', '')) * item.quantity).toFixed(2)}
                                   </div>
-                                  <div className="text-muted-foreground text-sm transition-colors duration-800">
+                                  <div className="text-muted-foreground text-xs sm:text-sm transition-colors duration-800">
                                     ₹{item.price.replace('₹', '')} × {item.quantity}
                                   </div>
                                 </div>
@@ -373,30 +339,30 @@ export default function ModernCart() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 }}
-                  className="relative rounded-2xl border border-purple-500/20 bg-gradient-to-br from-purple-500/10 to-transparent backdrop-blur-xl p-6 transition-colors duration-800"
+                  className="relative rounded-xl md:rounded-2xl border border-purple-500/20 bg-gradient-to-br from-purple-500/10 to-transparent backdrop-blur-xl p-4 sm:p-6 transition-colors duration-800"
                 >
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
-                      <TrendingUp className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-purple-500/20 flex items-center justify-center flex-shrink-0">
+                      <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600 dark:text-purple-400" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-bold text-foreground transition-colors duration-800">Boost Your Server</h3>
-                      <p className="text-muted-foreground text-sm transition-colors duration-800">Popular upgrades for better performance</p>
+                      <h3 className="text-base sm:text-lg font-bold text-foreground transition-colors duration-800">Boost Your Server</h3>
+                      <p className="text-muted-foreground text-xs sm:text-sm transition-colors duration-800">Popular upgrades for better performance</p>
                     </div>
                   </div>
                   
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {[
                       { name: 'Extra RAM', price: '₹20', icon: '🚀' },
                       { name: 'Priority Support', price: '₹30', icon: '⚡' },
                     ].map((addon, idx) => (
                       <button
                         key={idx}
-                        className="p-4 rounded-xl bg-foreground/5 border border-border hover:border-purple-500/30 hover:bg-purple-500/10 transition-all text-left group"
+                        className="p-3 sm:p-4 rounded-xl bg-foreground/5 border border-border hover:border-purple-500/30 hover:bg-purple-500/10 transition-all text-left group !min-h-0 !min-w-0"
                       >
-                        <div className="text-2xl mb-2">{addon.icon}</div>
-                        <div className="text-foreground font-semibold text-sm mb-1 transition-colors duration-800">{addon.name}</div>
-                        <div className="text-purple-600 dark:text-purple-400 font-bold transition-colors duration-800">{addon.price}/mo</div>
+                        <div className="text-xl sm:text-2xl mb-2">{addon.icon}</div>
+                        <div className="text-foreground font-semibold text-xs sm:text-sm mb-1 transition-colors duration-800">{addon.name}</div>
+                        <div className="text-purple-600 dark:text-purple-400 font-bold text-xs sm:text-sm transition-colors duration-800">{addon.price}/mo</div>
                       </button>
                     ))}
                   </div>
@@ -410,9 +376,9 @@ export default function ModernCart() {
                 <motion.div
                   initial={{ opacity: 0, x: 50 }}
                   animate={{ opacity: 1, x: 0 }}
-                  className="sticky top-24 space-y-6"
+                  className="lg:sticky lg:top-24 space-y-6"
                 >
-                  <div className="relative rounded-3xl border border-border bg-card backdrop-blur-xl overflow-hidden transition-colors duration-800">
+                  <div className="relative rounded-2xl md:rounded-3xl border border-border bg-card backdrop-blur-xl overflow-hidden transition-colors duration-800">
                     <div className="absolute inset-0 opacity-5">
                       <div className="absolute inset-0" style={{
                         backgroundImage: 'radial-gradient(circle at 2px 2px, currentColor 1px, transparent 0)',
@@ -420,117 +386,35 @@ export default function ModernCart() {
                       }} />
                     </div>
                     
-                    <div className="relative z-10 p-8">
+                    <div className="relative z-10 p-6 md:p-8">
                       <div className="flex items-center justify-between mb-6">
-                        <h3 className="text-2xl font-bold text-foreground transition-colors duration-800">Order Summary</h3>
+                        <h3 className="text-xl md:text-2xl font-bold text-foreground transition-colors duration-800">Order Summary</h3>
                         <div className="flex items-center gap-1 text-teal-600 dark:text-teal-400">
-                          <Lock className="w-4 h-4" />
-                          <span className="text-xs font-medium">Secure</span>
+                          <Lock className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                          <span className="text-[10px] md:text-xs font-medium">Secure</span>
                         </div>
                       </div>
                       
-                      <div className="space-y-4 mb-6 pb-6 border-b border-border transition-colors duration-800">
-                        <div className="flex justify-between text-foreground/80 transition-colors duration-800">
+                      <div className="space-y-3 sm:space-y-4 mb-6 pb-6 border-b border-border transition-colors duration-800">
+                        <div className="flex justify-between text-sm sm:text-base text-foreground/80 transition-colors duration-800">
                           <span>Subtotal</span>
                           <span className="font-semibold">₹{subtotal.toFixed(2)}</span>
                         </div>
-                        
-                        {appliedCoupon && (
-                          <motion.div
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: 'auto' }}
-                            className="flex justify-between items-center text-teal-600 dark:text-teal-400"
-                          >
-                            <div className="flex items-center gap-2">
-                              <Gift className="w-4 h-4" />
-                              <span>Discount ({appliedCoupon.discount}%)</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <span className="font-semibold">-₹{discountAmount.toFixed(2)}</span>
-                              <button
-                                onClick={removeCoupon}
-                                className="text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 transition-colors"
-                              >
-                                <X className="w-4 h-4" />
-                              </button>
-                            </div>
-                          </motion.div>
-                        )}
                       </div>
 
                       <div className="flex justify-between items-baseline mb-6">
-                        <span className="text-muted-foreground text-lg transition-colors duration-800">Total Due</span>
+                        <span className="text-muted-foreground text-base md:text-lg transition-colors duration-800">Total Due</span>
                         <div className="text-right">
                           <motion.div
                             key={total}
                             initial={{ scale: 1.1 }}
                             animate={{ scale: 1 }}
-                            className="text-4xl font-bold text-transparent bg-gradient-to-r from-teal-500 to-purple-500 bg-clip-text"
+                            className="text-3xl md:text-4xl font-bold text-transparent bg-gradient-to-r from-teal-500 to-purple-500 bg-clip-text"
                           >
                             ₹{total.toFixed(2)}
                           </motion.div>
-                          <p className="text-muted-foreground/40 text-sm mt-1 transition-colors duration-800">per month</p>
+                          <p className="text-muted-foreground/40 text-[10px] md:text-sm mt-1 transition-colors duration-800">per month</p>
                         </div>
-                      </div>
-                      
-                      <div className="mb-6">
-                        <div className="flex gap-2 mb-3">
-                          <div className="relative flex-1">
-                            <Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground/40 transition-colors duration-800" />
-                            <input
-                              type="text"
-                              value={couponCode}
-                              onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
-                              onKeyPress={(e) => e.key === 'Enter' && applyCoupon(couponCode)}
-                              placeholder="COUPON CODE"
-                              disabled={!!appliedCoupon}
-                              className="w-full pl-10 pr-4 py-3 rounded-xl bg-foreground/5 border border-border text-foreground placeholder-muted-foreground/40 focus:outline-none focus:border-teal-500/50 transition-all disabled:opacity-50"
-                            />
-                          </div>
-                          <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            onClick={() => applyCoupon(couponCode)}
-                            disabled={!couponCode || !!appliedCoupon}
-                            className="px-6 py-3 rounded-xl bg-teal-600 text-white font-semibold hover:bg-teal-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                          >
-                            Apply
-                          </motion.button>
-                        </div>
-                        
-                        <button
-                          onClick={() => setShowCouponList(!showCouponList)}
-                          className="text-teal-600 dark:text-teal-400 text-sm hover:text-teal-500 dark:hover:text-teal-300 transition-colors flex items-center gap-1"
-                        >
-                          <Sparkles className="w-4 h-4" />
-                          {showCouponList ? 'Hide' : 'Show'} available coupons
-                        </button>
-                        
-                        <AnimatePresence>
-                          {showCouponList && (
-                            <motion.div
-                              initial={{ opacity: 0, height: 0 }}
-                              animate={{ opacity: 1, height: 'auto' }}
-                              exit={{ opacity: 0, height: 0 }}
-                              className="mt-3 space-y-2"
-                            >
-                              {availableCoupons.map((coupon) => (
-                                <button
-                                  key={coupon.code}
-                                  onClick={() => applyCoupon(coupon.code)}
-                                  disabled={!!appliedCoupon}
-                                  className="w-full p-3 rounded-lg bg-foreground/5 border border-border hover:border-teal-500/30 hover:bg-teal-500/10 transition-all text-left disabled:opacity-50 disabled:cursor-not-allowed"
-                                >
-                                  <div className="flex items-center justify-between mb-1">
-                                    <span className="text-teal-600 dark:text-teal-400 font-bold text-sm">{coupon.code}</span>
-                                    <span className="text-teal-600 dark:text-teal-400 font-bold text-sm">{coupon.discount}% OFF</span>
-                                  </div>
-                                  <p className="text-muted-foreground text-xs transition-colors duration-800">{coupon.description}</p>
-                                </button>
-                              ))}
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
                       </div>
 
                       <motion.button

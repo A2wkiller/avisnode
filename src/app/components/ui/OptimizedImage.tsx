@@ -23,8 +23,6 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
   objectFit = 'cover',
   ...props
 }) => {
-  const isExternal = src.startsWith('http');
-  
   // Basic optimization: if it's a Supabase URL, we could append transformation parameters
   // For now, we'll focus on standard HTML optimizations
   
@@ -39,6 +37,7 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
         width={width}
         height={height}
         loading={priority ? 'eager' : 'lazy'}
+        fetchPriority={priority ? 'high' : 'auto'}
         decoding="async"
         className={cn(
           'max-w-full h-auto',

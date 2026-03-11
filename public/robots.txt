@@ -1,0 +1,11 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://avixnode.com/sitemap.xml
+
+# Block search engines from indexing the cart and legal pages if needed
+# Disallow: /cart
+# Disallow: /privacy
+# Disallow: /tos

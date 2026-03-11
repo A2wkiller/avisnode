@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { spring, viewportDefaults } from "../lib/animations";
+import { SchemaOrg } from "./SchemaOrg";
 
 const faqs = [
   {
@@ -25,8 +26,13 @@ const faqs = [
 export function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
+  const faqSchemaData = {
+    questions: faqs.map(f => ({ question: f.q, answer: f.a }))
+  };
+
   return (
     <div className="py-20 px-6 max-w-7xl mx-auto flex flex-col md:flex-row gap-12">
+      <SchemaOrg type="FAQPage" data={faqSchemaData} />
       <motion.div
         className="md:w-1/3"
         initial={{ opacity: 0, x: -24 }}
@@ -34,7 +40,7 @@ export function FAQ() {
         viewport={viewportDefaults}
         transition={{ ...spring.gentle, delay: 0.05 }}
       >
-        <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-b from-foreground to-foreground/60 bg-clip-text text-transparent mb-4 transition-colors duration-800">
+        <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-b from-foreground to-foreground/60 bg-clip-text text-transparent mb-4 transition-colors duration-800 speakable-content">
           Frequently Asked Questions
         </h2>
         <p className="text-muted-foreground mb-8 transition-colors duration-800">

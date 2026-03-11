@@ -9,6 +9,7 @@ const GameHosting  = lazy(() => import("./pages/GameHosting"));
 const Cart         = lazy(() => import("./pages/Cart"));
 const Dedicated    = lazy(() => import("./pages/Dedicated"));
 const Shared       = lazy(() => import("./pages/Shared"));
+const About        = lazy(() => import("./pages/About"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 
@@ -54,6 +55,7 @@ export const router = createBrowserRouter([
       { path: "cart",             element: withSuspense(Cart)          },
       { path: "dedicated",        element: withSuspense(Dedicated)     },
       { path: "shared",           element: withSuspense(Shared)        },
+      { path: "about",            element: withSuspense(About)         },
       { path: "privacy",          element: withSuspense(PrivacyPolicy) },
       { path: "tos",              element: withSuspense(TermsOfService)},
       { path: "*",                element: withSuspense(Home)          },

@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import { Link } from "react-router";
 import { ArrowLeft, ArrowUpRight, Shield, FileText, CheckCircle2 } from "lucide-react";
+import { SEO } from "../components/SEO";
 
 export default function TermsOfService() {
   const sections = [
@@ -107,7 +108,11 @@ export default function TermsOfService() {
 
   return (
     <div className="min-h-screen pt-24 pb-20 px-6 bg-background text-foreground transition-colors duration-800">
-      <div className="max-w-7xl mx-auto">
+      <SEO 
+        title="Terms of Service"
+        description="Read the terms and conditions for using AvixNode's game hosting services. By using our service, you agree to these terms."
+      />
+      <div className="max-w-4xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

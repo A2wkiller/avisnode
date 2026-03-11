@@ -66,7 +66,7 @@ export function Testimonials() {
                     key={`${setIndex}-${i}`}
                     whileHover={{ y: -4 }}
                     transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                    className={`w-[350px] md:w-[400px] p-8 rounded-3xl border text-left relative overflow-hidden group hover:border-teal-500/30 transition-all duration-300 flex-shrink-0 ${review.featured ? "bg-card border-teal-500/30 shadow-xl" : "bg-secondary/20 border-border opacity-80 hover:opacity-100"}`}
+                    className={`w-[280px] sm:w-[350px] md:w-[400px] p-6 sm:p-8 rounded-3xl border text-left relative overflow-hidden group hover:border-teal-500/30 transition-all duration-300 flex-shrink-0 ${review.featured ? "bg-card border-teal-500/30 shadow-xl" : "bg-secondary/20 border-border opacity-80 hover:opacity-100"}`}
                   >
                     <div className="flex gap-1 mb-6 text-teal-500 dark:text-teal-400">
                       {[1, 2, 3, 4, 5].map((s) => (

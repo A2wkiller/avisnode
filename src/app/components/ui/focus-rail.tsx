@@ -134,12 +134,41 @@ export function FocusRail({
 
     const visibleIndices = [-2, -1, 0, 1, 2];
 
+    // Responsive dimensions
+    const [cardWidth, setCardWidth] = React.useState(300);
+    const [railHeight, setRailHeight] = React.useState(600);
+    const [xSpacing, setXSpacing] = React.useState(320);
+
+    React.useEffect(() => {
+        const updateDimensions = () => {
+            const width = window.innerWidth;
+            if (width < 640) { // Mobile
+                setCardWidth(220);
+                setRailHeight(500);
+                setXSpacing(240);
+            } else if (width < 1024) { // Tablet
+                setCardWidth(260);
+                setRailHeight(550);
+                setXSpacing(280);
+            } else { // Desktop
+                setCardWidth(300);
+                setRailHeight(600);
+                setXSpacing(320);
+            }
+        };
+
+        updateDimensions();
+        window.addEventListener("resize", updateDimensions);
+        return () => window.removeEventListener("resize", updateDimensions);
+    }, []);
+
     return (
         <div
             className={cn(
-                "group relative flex h-[600px] w-full flex-col overflow-hidden bg-transparent text-foreground outline-none select-none overflow-x-hidden transition-colors duration-800",
+                "group relative flex w-full flex-col overflow-hidden bg-transparent text-foreground outline-none select-none overflow-x-hidden transition-all duration-800",
                 className
             )}
+            style={{ height: railHeight }}
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
             tabIndex={0}
@@ -171,7 +200,7 @@ export function FocusRail({
             <div className="relative z-10 flex flex-1 flex-col justify-center px-4 md:px-8">
                 {/* DRAGGABLE RAIL CONTAINER */}
                 <motion.div
-                    className="relative mx-auto flex h-[360px] w-full max-w-6xl items-center justify-center perspective-[1200px] cursor-grab active:cursor-grabbing"
+                    className="relative mx-auto flex h-[320px] sm:h-[360px] w-full max-w-6xl items-center justify-center perspective-[1200px] cursor-grab active:cursor-grabbing"
                     drag="x"
                     dragConstraints={{ left: 0, right: 0 }}
                     dragElastic={0.2}
@@ -188,7 +217,7 @@ export function FocusRail({
                         const dist = Math.abs(offset);
 
                         // Dynamic transforms
-                        const xOffset = offset * 320;
+                        const xOffset = offset * xSpacing;
                         const zOffset = -dist * 180;
                         const scale = isCenter ? 1 : 0.85;
                         const rotateY = offset * -20;
@@ -201,9 +230,13 @@ export function FocusRail({
                             <motion.div
                                 key={absIndex}
                                 className={cn(
-                                    "absolute aspect-[3/4] w-[260px] md:w-[300px] rounded-2xl border-t border-border bg-card shadow-2xl transition-shadow duration-300",
+                                    "absolute aspect-[3/4] rounded-2xl border-t border-border bg-card shadow-2xl transition-shadow duration-300",
                                     isCenter ? "z-20 shadow-primary/10" : "z-10"
                                 )}
+                                style={{
+                                    width: cardWidth,
+                                    transformStyle: "preserve-3d",
+                                }}
                                 initial={false}
                                 animate={{
                                     x: xOffset,
@@ -216,9 +249,6 @@ export function FocusRail({
                                 transition={{
                                     default: BASE_SPRING,
                                     scale: TAP_SPRING,
-                                }}
-                                style={{
-                                    transformStyle: "preserve-3d",
                                 }}
                                 onClick={() => {
                                     if (offset !== 0) setActive((p) => p + offset);
@@ -239,8 +269,8 @@ export function FocusRail({
                 </motion.div>
 
                 {/* Info & Controls */}
-                <div className="mx-auto mt-12 flex w-full max-w-4xl flex-col items-center justify-between gap-6 md:flex-row pointer-events-auto">
-                    <div className="flex flex-1 flex-col items-center text-center md:items-start md:text-left h-32 justify-center">
+                <div className="mx-auto mt-8 sm:mt-12 flex w-full max-w-4xl flex-col items-center justify-between gap-6 md:flex-row pointer-events-auto">
+                    <div className="flex flex-1 flex-col items-center text-center md:items-start md:text-left h-24 sm:h-32 justify-center">
                         <AnimatePresence mode="wait">
                             <motion.div
                                 key={activeItem.id}

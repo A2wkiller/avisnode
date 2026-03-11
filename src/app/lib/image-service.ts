@@ -69,7 +69,7 @@ export const optimizeImage = async (
 
 export const uploadImage = async (
   file: File,
-  bucket: string = 'images',
+  _bucket: string = 'images',
   options: ImageOptimizationOptions = {}
 ) => {
   // 1. Validate MIME type

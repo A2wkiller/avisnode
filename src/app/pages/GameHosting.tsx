@@ -3,6 +3,8 @@ import { assets } from "../assets";
 import { GlobalMap } from "../components/GlobalMap";
 import { FAQ } from "../components/FAQ";
 import { Testimonials } from "../components/Testimonials";
+import { SEO } from "../components/SEO";
+import { SchemaOrg } from "../components/SchemaOrg";
 import {
   Cpu,
   MemoryStick,
@@ -641,29 +643,47 @@ export default function GameHosting() {
       ? `Starting from ${currentPlans[0].price}/month`
       : currentGame.startingPrice;
 
+  const productSchemaData = {
+    image: currentGame.bgImage,
+    minPrice: currentGame.startingPrice.split('/')[0].replace('₹', ''),
+    currency: 'INR',
+    offerCount: (currentGame.standardPlans?.length || 0) + (currentGame.starterPlans?.length || 0) + (currentGame.premiumPlans?.length || 0)
+  };
+
   return (
-    <div className="bg-background min-h-screen text-foreground font-sans overflow-hidden transition-colors duration-800">
+    <div className="bg-background min-h-screen text-foreground font-sans overflow-x-hidden transition-colors duration-800">
+      <SEO 
+        title={`${currentGame.name} Server Hosting`}
+        description={`High-performance ${currentGame.name} server hosting with instant setup, DDoS protection, and powerful hardware for lag-free gaming.`}
+        keywords={`${currentGame.name} hosting, ${currentGame.name} server, game hosting, avixnode`}
+      />
+      <SchemaOrg 
+        type="Product" 
+        name={`${currentGame.name} Server Hosting`}
+        description={`Premium game server hosting for ${currentGame.name} with enterprise DDoS protection.`}
+        data={productSchemaData}
+      />
       {/* Hero Section */}
-      <div className="relative pt-32 pb-20 px-6">
+      <div className="relative pt-24 md:pt-32 pb-16 md:pb-20 px-4 md:px-6">
         <div className="max-w-7xl mx-auto flex flex-col items-center">
-          <div className="text-center mb-12 relative z-10">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight transition-colors duration-800">
+          <div className="text-center mb-8 md:mb-12 relative z-10">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 tracking-tight transition-colors duration-800">
               GAME SERVER HOSTING
             </h1>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto transition-colors duration-800">
+            <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto transition-colors duration-800 px-2">
               High-performance game servers with instant setup, DDoS protection,
               and powerful hardware for lag-free gaming.
             </p>
           </div>
 
           {/* Billing Toggle */}
-          <div className="flex items-center gap-1 bg-secondary p-1 rounded-full border border-border mb-8 relative z-10 transition-colors duration-800">
+          <div className="flex items-center gap-1 bg-secondary p-1 rounded-full border border-border mb-6 md:mb-8 relative z-10 transition-colors duration-800">
             {["Mo", "3Mo", "Yr"].map((cycle) => (
               <button
                 key={cycle}
                 onClick={() => setBillingCycle(cycle as "Mo" | "3Mo" | "Yr")}
                 className={clsx(
-                  "px-4 py-1.5 rounded-full text-xs font-medium transition-all relative",
+                  "px-4 py-1.5 rounded-full text-xs font-medium transition-all relative !min-h-0 !min-w-0",
                   billingCycle === cycle
                     ? "text-white"
                     : "text-muted-foreground hover:text-foreground",
@@ -682,8 +702,8 @@ export default function GameHosting() {
           </div>
 
           {/* Game Banner Card */}
-          <div className="relative w-full max-w-6xl rounded-3xl overflow-hidden border border-border shadow-2xl group mb-8 transition-colors duration-800">
-            <div className="relative aspect-[21/9] md:aspect-[21/6]">
+          <div className="relative w-full max-w-6xl rounded-2xl md:rounded-3xl overflow-hidden border border-border shadow-2xl group mb-8 transition-colors duration-800">
+            <div className="relative aspect-[4/5] sm:aspect-[21/9] md:aspect-[21/6]">
               {/* Video background (if available and no error) */}
               {currentGame.videoSrc && !videoError ? (
                 <>
@@ -733,20 +753,20 @@ export default function GameHosting() {
                 />
               )}
 
-              <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/60 to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-b sm:bg-gradient-to-r from-black/95 via-black/60 to-transparent pointer-events-none" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none" />
 
               {/* Live indicator shown when video is playing */}
               {videoLoaded && currentGame.videoSrc && !videoError && (
-                <div className="absolute bottom-4 right-4 px-3 py-1.5 rounded-full bg-black/40 backdrop-blur-sm border border-white/10 text-white/60 text-xs font-medium flex items-center gap-2 pointer-events-none">
-                  <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                <div className="absolute bottom-4 right-4 px-3 py-1.5 rounded-full bg-black/40 backdrop-blur-sm border border-white/10 text-white/60 text-[10px] sm:text-xs font-medium flex items-center gap-2 pointer-events-none">
+                  <div className="w-1.5 h-1.5 sm:w-2 h-2 rounded-full bg-red-500 animate-pulse" />
                   <span>LIVE</span>
                 </div>
               )}
 
-              <div className="absolute inset-0 flex items-center px-8 md:px-16">
-                <div className="flex items-center gap-6 max-w-3xl">
-                  <div className="w-20 h-20 md:w-28 md:h-28 rounded-2xl bg-black/40 backdrop-blur-md border border-white/20 p-3 flex-shrink-0">
+              <div className="absolute inset-0 flex items-center justify-center sm:justify-start px-6 md:px-16">
+                <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 max-w-3xl text-center sm:text-left">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-28 md:h-28 rounded-xl sm:rounded-2xl bg-black/40 backdrop-blur-md border border-white/20 p-2 sm:p-3 flex-shrink-0">
                     <ImageWithFallback
                       src={currentGame.icon}
                       alt={`${currentGame.name} icon`}
@@ -757,15 +777,15 @@ export default function GameHosting() {
                       className="w-full h-full object-contain drop-shadow-2xl"
                     />
                   </div>
-                  <div className="flex flex-col gap-3">
-                    <h2 className="text-5xl md:text-6xl font-bold text-white tracking-tight drop-shadow-lg transition-colors duration-800">
+                  <div className="flex flex-col gap-2 sm:gap-3">
+                    <h2 className="text-3xl sm:text-5xl md:text-6xl font-bold text-white tracking-tight drop-shadow-lg transition-colors duration-800">
                       {currentGame.name}
                     </h2>
-                    <p className="text-teal-400 font-semibold text-lg md:text-xl transition-colors duration-800">
+                    <p className="text-teal-400 font-semibold text-base sm:text-lg md:text-xl transition-colors duration-800">
                       {displayStartingPrice}
                     </p>
 
-                    <div className="flex items-center gap-2 mt-2 flex-wrap">
+                    <div className="flex items-center justify-center sm:justify-start gap-2 mt-2 flex-wrap">
                       {(["Starter", "Standard", "Premium"] as const).map(
                         (tier) => {
                           const isDisabled =
@@ -778,7 +798,7 @@ export default function GameHosting() {
                               onClick={() => !isDisabled && setPlanTier(tier)}
                               disabled={isDisabled}
                               className={clsx(
-                                "px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 backdrop-blur-sm border",
+                                "px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 backdrop-blur-sm border !min-h-0 !min-w-0",
                                 isActive
                                   ? "bg-teal-600 border-teal-500 text-white shadow-lg shadow-teal-500/30"
                                   : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10 hover:text-white",
@@ -799,13 +819,13 @@ export default function GameHosting() {
           </div>
 
           {/* Game Selector List */}
-          <div className="flex flex-wrap justify-center gap-4 mt-8 relative z-10">
+          <div className="flex flex-wrap justify-center gap-2 sm:gap-4 mt-4 sm:mt-8 relative z-10 px-4">
             {gameList.map((game) => (
               <button
                 key={game.id}
                 onClick={() => games[game.id] && setSelectedGame(game.id)}
                 className={clsx(
-                  "flex items-center gap-3 px-5 py-2.5 rounded-full border backdrop-blur-md transition-all duration-300",
+                  "flex items-center gap-2 sm:gap-3 px-3 sm:px-5 py-2 sm:py-2.5 rounded-full border backdrop-blur-md transition-all duration-300 !min-h-0 !min-w-0",
                   selectedGame === game.id
                     ? "bg-teal-600 border-teal-500 text-white shadow-[0_0_20px_rgba(20,184,166,0.3)]"
                     : "bg-secondary border-border text-muted-foreground hover:bg-teal-500/10 hover:border-teal-500/30 hover:text-foreground",
@@ -818,15 +838,15 @@ export default function GameHosting() {
                   decoding="async"
                   width="20"
                   height="20"
-                  className="w-5 h-5 object-contain"
+                  className="w-4 h-4 sm:w-5 sm:h-5 object-contain"
                 />
-                <span className="text-sm font-medium">{game.name}</span>
+                <span className="text-xs sm:text-sm font-medium">{game.name}</span>
               </button>
             ))}
           </div>
 
           {/* Pricing Plans Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-7xl mt-20">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 w-full max-w-7xl mt-12 md:mt-20 px-4">
             {currentPlans.slice(0, 3).map((plan, index) => {
               // Determine if this is the popular plan
               // For Minecraft: Gold. For Garry's Mod: TTT. CS2: Premier. Others: 2nd plan.

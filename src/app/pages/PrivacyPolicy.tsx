@@ -1,10 +1,15 @@
 import { motion } from "motion/react";
 import { Link } from "react-router";
 import { ArrowLeft, Mail } from "lucide-react";
+import { SEO } from "../components/SEO";
 
 export default function PrivacyPolicy() {
   return (
     <div className="min-h-screen pt-24 pb-20 px-6 bg-background text-foreground transition-colors duration-800">
+      <SEO 
+        title="Privacy Policy"
+        description="Learn how AvixNode collects, uses, and protects your personal information when you use our game hosting services."
+      />
       <div className="max-w-4xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

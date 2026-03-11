@@ -5,6 +5,8 @@ import { Testimonials } from "../components/Testimonials";
 import { CountdownTimer } from "../components/ui/CountdownTimer";
 import PaywayHero from "../components/ui/PaywayHero";
 import { FocusRail, type FocusRailItem } from "../components/ui/focus-rail";
+import { SEO } from "../components/SEO";
+import { SchemaOrg } from "../components/SchemaOrg";
 
 const POPULAR_GAMES_ITEMS: FocusRailItem[] = [
   {
@@ -73,6 +75,8 @@ const POPULAR_GAMES_ITEMS: FocusRailItem[] = [
 export default function Home() {
   return (
     <div className="bg-background text-foreground transition-colors duration-800">
+      <SEO />
+      <SchemaOrg type="WebSite" />
       {/* Hero Section */}
       <PaywayHero />
 
@@ -82,7 +86,7 @@ export default function Home() {
         id="games"
       >
         <div className="mb-12 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 speakable-content">
             Popular Games
           </h2>
           <p className="text-muted-foreground text-lg">

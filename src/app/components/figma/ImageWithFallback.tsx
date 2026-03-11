@@ -11,7 +11,7 @@ export function ImageWithFallback(props: React.ImgHTMLAttributes<HTMLImageElemen
   }
 
   // Extract fetchPriority from props to avoid passing it directly to the DOM in older React versions
-  const { src, alt, style, className, fetchPriority, ...rest } = props as any
+  const { src, alt, style, className, fetchPriority, ...rest } = props as React.ImgHTMLAttributes<HTMLImageElement> & { fetchPriority?: string }
 
   return didError ? (
     <div
@@ -28,8 +28,11 @@ export function ImageWithFallback(props: React.ImgHTMLAttributes<HTMLImageElemen
       alt={alt} 
       className={className} 
       style={style} 
+      loading={props.loading || "lazy"}
+      decoding={props.decoding || "async"}
       {...rest} 
-      // @ts-ignore - for newer browser support in React 18
+      // @ts-expect-error - for newer browser support in React 18
+      // eslint-disable-next-line react/no-unknown-property
       fetchpriority={fetchPriority}
       onError={handleError} 
     />
