@@ -47,7 +47,7 @@ export function FAQ() {
           Everything you need to know about our game hosting services.
         </p>
         <a
-          href="https://discord.gg/Cv3tTtwanC"
+          href="https://discord.gg/FySwd4e9jf"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-block w-48 bg-teal-500/10 border border-teal-500/30 text-teal-600 dark:text-teal-400 hover:bg-teal-500/20 px-6 py-3 rounded-full font-bold shadow-[0_0_20px_rgba(20,184,166,0.15)] transition-all"

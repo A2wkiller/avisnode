@@ -23,7 +23,7 @@ export const SEO = ({
   const { pathname } = useLocation();
   
   const siteName = 'AvixNode';
-  const defaultTitle = 'AvixNode - High Performance Game Hosting for Minecraft, Rust & ARK';
+  const defaultTitle = 'AvixNode - High Performance Game Hosting';
   const defaultDescription = 'AvixNode provides premium, low-latency game server hosting powered by Ryzen 9 7950X CPUs. Featuring instant setup, 24/7 technical support, and enterprise-grade DDoS protection for Minecraft, Rust, ARK, and Valheim.';
   const defaultKeywords = 'game hosting, minecraft server hosting, rust server hosting, ark survival evolved hosting, valheim server hosting, high performance vps, dedicated servers, ddos protection, low latency gaming';
   const siteUrl = 'https://avixnode.com';
@@ -42,6 +42,7 @@ export const SEO = ({
     <Helmet>
       {/* General tags */}
       <html lang={lang} />
+      <link rel="icon" type="image/png" href="/assets/weblogo.png" />
       <title>{seo.title}</title>
       <meta name="description" content={seo.description} />
       <meta name="keywords" content={seo.keywords} />

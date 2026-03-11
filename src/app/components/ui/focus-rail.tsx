@@ -227,8 +227,9 @@ export function FocusRail({
                         const brightness = isCenter ? 1 : 0.5;
 
                         return (
+                            <Link to={item.href || "#"} key={absIndex}>
                             <motion.div
-                                key={absIndex}
+                                
                                 className={cn(
                                     "absolute aspect-[3/4] rounded-2xl border-t border-border bg-card shadow-2xl transition-shadow duration-300",
                                     isCenter ? "z-20 shadow-primary/10" : "z-10"
@@ -264,6 +265,7 @@ export function FocusRail({
                                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-white/5 to-transparent pointer-events-none" />
                                 <div className="absolute inset-0 rounded-2xl bg-foreground/5 pointer-events-none mix-blend-multiply" />
                             </motion.div>
+                            </Link>
                         );
                     })}
                 </motion.div>

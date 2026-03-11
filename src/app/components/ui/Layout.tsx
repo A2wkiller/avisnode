@@ -51,7 +51,7 @@ export function Layout() {
   const animeNavItems = [
     { name: "Home", url: "/", icon: Home },
     { name: "Games", url: "/games", icon: Gamepad2 },
-    { name: "Cart", url: "/cart", icon: ShoppingCart },
+
     { name: "Shared", url: "/shared", icon: Server, comingSoon: true },
     { name: "Dedicated", url: "/dedicated", icon: Server, comingSoon: true },
   ];
@@ -174,17 +174,7 @@ export function Layout() {
                 </motion.div>
               </AnimatePresence>
             </button>
-            <Link 
-              to="/cart"
-              className={clsx(
-                "p-2 rounded-full transition-colors !min-h-[40px] !min-w-[40px]",
-                !scrolled && isHomePage 
-                  ? (theme === "dark" ? "text-white hover:bg-white/10" : "text-zinc-900 hover:bg-zinc-100")
-                  : "text-foreground hover:bg-foreground/10"
-              )}
-            >
-              <ShoppingCart className="w-5 h-5" />
-            </Link>
+
 
             {/* Mobile Menu Button */}
             <button
@@ -287,21 +277,7 @@ export function Layout() {
 
                 <div className="h-px bg-border my-3" />
 
-                <motion.div
-                  className="flex flex-col gap-3 px-4"
-                  initial={{ opacity: 0, y: 4 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ ...spring.snappy, delay: 0.15 }}
-                >
-                  <Link
-                    to="/cart"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="flex items-center justify-center gap-2 py-3 rounded-xl bg-foreground/5 text-foreground font-medium hover:bg-foreground/10 transition-colors"
-                  >
-                    <ShoppingCart className="w-4 h-4 text-teal-500 dark:text-teal-400" />
-                    View Cart
-                  </Link>
-                </motion.div>
+
               </div>
             </motion.div>
           )}
@@ -351,7 +327,7 @@ export function Layout() {
               </p>
               <div className="flex gap-4">
                 <a
-                  href="https://discord.gg/RbRrQY4Pz4"
+                  href="https://discord.gg/FySwd4e9jf"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="!min-h-0 !min-w-0"
@@ -405,6 +381,8 @@ export function Layout() {
                    <div className="px-3 py-1.5 rounded-lg border border-border bg-foreground/5 text-[10px] font-bold">STIPE</div>
                    <div className="px-3 py-1.5 rounded-lg border border-border bg-foreground/5 text-[10px] font-bold">RAZORPAY</div>
                    <div className="px-3 py-1.5 rounded-lg border border-border bg-foreground/5 text-[10px] font-bold">PAYPAL</div>
+                   <div className="px-3 py-1.5 rounded-lg border border-border bg-foreground/5 text-[10px] font-bold">CASHFREE</div>
+                   <div className="px-3 py-1.5 rounded-lg border border-border bg-foreground/5 text-[10px] font-bold">VISA</div>
                 </div>
               </div>
             </div>
