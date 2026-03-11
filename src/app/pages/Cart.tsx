@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
+import clsx from 'clsx';
 import { assets } from '../assets';
 import { SEO } from '../components/SEO';
 
@@ -71,17 +72,58 @@ export default function Cart() {
   // Update quantity
   const updateQuantity = (itemId: string, change: number) => {
     setCartItems(items =>
-      items.map(item =>
-        item.id === itemId
-          ? { ...item, quantity: Math.max(1, item.quantity + change) }
-          : item
-      ).filter(item => item.quantity > 0)
+      items.map(item => {
+        if (item.id !== itemId) return item;
+        
+        let newQuantity = item.quantity + change;
+        
+        // Enforce limits
+        if (item.name === 'Extra RAM') {
+          newQuantity = Math.min(10, Math.max(1, newQuantity));
+          if (newQuantity === 10 && change > 0) {
+            toast.error('Maximum 10 units of Extra RAM allowed');
+          }
+        } else if (item.name === 'Priority Support') {
+          newQuantity = Math.min(1, Math.max(1, newQuantity));
+          if (newQuantity === 1 && change > 0) {
+            toast.error('Only 1 unit of Priority Support allowed');
+          }
+        } else {
+          newQuantity = Math.max(1, newQuantity);
+        }
+        
+        return { ...item, quantity: newQuantity };
+      }).filter(item => item.quantity > 0)
     );
   };
 
   // Remove item
   const removeItem = (itemId: string) => {
     setCartItems(items => items.filter(item => item.id !== itemId));
+  };
+
+  // Add addon to cart
+  const addAddon = (addon: { name: string, price: string, icon: string }) => {
+    // Check if this addon already exists in the cart
+    const exists = cartItems.find(item => item.name === addon.name);
+    
+    if (exists) {
+      toast.error(`${addon.name} is already in your cart!`);
+      return;
+    }
+
+    const newAddon: CartItem = {
+      id: `addon-${Date.now()}`,
+      name: addon.name,
+      price: addon.price,
+      gameId: 'addon',
+      icon: addon.icon,
+      quantity: 1,
+      features: ['One-click activation']
+    };
+    
+    setCartItems(prev => [...prev, newAddon]);
+    toast.success(`${addon.name} added to your cart!`);
   };
 
   // Calculate totals
@@ -240,13 +282,17 @@ export default function Cart() {
                           <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 text-center sm:text-left">
                             <motion.div
                               whileHover={{ scale: 1.1, rotate: 5 }}
-                              className="flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-gradient-to-br from-teal-500/20 to-purple-500/20 border border-teal-500/30 p-2 backdrop-blur-sm"
+                              className="flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-gradient-to-br from-teal-500/20 to-purple-500/20 border border-teal-500/30 p-2 backdrop-blur-sm flex items-center justify-center"
                             >
-                              <img
-                                src={item.icon || assets.imgMinecraft}
-                                alt={item.name}
-                                className="w-full h-full object-contain drop-shadow-lg"
-                              />
+                              {item.gameId === 'addon' ? (
+                                <span className="text-3xl sm:text-4xl">{item.icon}</span>
+                              ) : (
+                                <img
+                                  src={item.icon || assets.imgMinecraft}
+                                  alt={item.name}
+                                  className="w-full h-full object-contain drop-shadow-lg"
+                                />
+                              )}
                             </motion.div>
                             
                             <div className="flex-1 min-w-0 w-full">
@@ -287,10 +333,11 @@ export default function Cart() {
                                   <span className="text-muted-foreground text-xs sm:text-sm font-medium transition-colors duration-800">Quantity:</span>
                                   <div className="flex items-center gap-2">
                                     <motion.button
-                                      whileHover={{ scale: 1.1 }}
-                                      whileTap={{ scale: 0.9 }}
+                                      whileHover={{ scale: item.quantity > 1 ? 1.1 : 1 }}
+                                      whileTap={{ scale: item.quantity > 1 ? 0.9 : 1 }}
                                       onClick={() => updateQuantity(item.id, -1)}
-                                      className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-foreground/5 border border-border text-foreground hover:bg-teal-500/20 hover:border-teal-500/30 transition-all flex items-center justify-center !min-h-0 !min-w-0"
+                                      disabled={item.quantity <= 1}
+                                      className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-foreground/5 border border-border text-foreground hover:bg-teal-500/20 hover:border-teal-500/30 transition-all flex items-center justify-center !min-h-0 !min-w-0 disabled:opacity-30 disabled:cursor-not-allowed"
                                     >
                                       <Minus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                                     </motion.button>
@@ -305,10 +352,24 @@ export default function Cart() {
                                     </motion.span>
                                     
                                     <motion.button
-                                      whileHover={{ scale: 1.1 }}
-                                      whileTap={{ scale: 0.9 }}
+                                      whileHover={{ 
+                                        scale: (item.name === 'Extra RAM' && item.quantity < 10) || 
+                                               (item.name === 'Priority Support' && item.quantity < 1) ||
+                                               (!['Extra RAM', 'Priority Support'].includes(item.name)) 
+                                               ? 1.1 : 1 
+                                      }}
+                                      whileTap={{ 
+                                        scale: (item.name === 'Extra RAM' && item.quantity < 10) || 
+                                               (item.name === 'Priority Support' && item.quantity < 1) ||
+                                               (!['Extra RAM', 'Priority Support'].includes(item.name)) 
+                                               ? 0.9 : 1 
+                                      }}
                                       onClick={() => updateQuantity(item.id, 1)}
-                                      className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-foreground/5 border border-border text-foreground hover:bg-teal-500/20 hover:border-teal-500/30 transition-all flex items-center justify-center !min-h-0 !min-w-0"
+                                      disabled={
+                                        (item.name === 'Extra RAM' && item.quantity >= 10) ||
+                                        (item.name === 'Priority Support' && item.quantity >= 1)
+                                      }
+                                      className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-foreground/5 border border-border text-foreground hover:bg-teal-500/20 hover:border-teal-500/30 transition-all flex items-center justify-center !min-h-0 !min-w-0 disabled:opacity-30 disabled:cursor-not-allowed"
                                     >
                                       <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                                     </motion.button>
@@ -355,16 +416,34 @@ export default function Cart() {
                     {[
                       { name: 'Extra RAM', price: '₹20', icon: '🚀' },
                       { name: 'Priority Support', price: '₹30', icon: '⚡' },
-                    ].map((addon, idx) => (
-                      <button
-                        key={idx}
-                        className="p-3 sm:p-4 rounded-xl bg-foreground/5 border border-border hover:border-purple-500/30 hover:bg-purple-500/10 transition-all text-left group !min-h-0 !min-w-0"
-                      >
-                        <div className="text-xl sm:text-2xl mb-2">{addon.icon}</div>
-                        <div className="text-foreground font-semibold text-xs sm:text-sm mb-1 transition-colors duration-800">{addon.name}</div>
-                        <div className="text-purple-600 dark:text-purple-400 font-bold text-xs sm:text-sm transition-colors duration-800">{addon.price}/mo</div>
-                      </button>
-                    ))}
+                    ].map((addon, idx) => {
+                      const isAdded = cartItems.some(item => item.name === addon.name);
+                      return (
+                        <button
+                          key={idx}
+                          onClick={() => !isAdded && addAddon(addon)}
+                          disabled={isAdded}
+                          className={clsx(
+                            "p-3 sm:p-4 rounded-xl border transition-all text-left group !min-h-0 !min-w-0",
+                            isAdded 
+                              ? "bg-teal-500/10 border-teal-500/30 opacity-60 cursor-not-allowed" 
+                              : "bg-foreground/5 border-border hover:border-purple-500/30 hover:bg-purple-500/10"
+                          )}
+                        >
+                          <div className="flex justify-between items-start">
+                            <div className="text-xl sm:text-2xl mb-2">{addon.icon}</div>
+                            {isAdded && (
+                              <span className="text-[10px] font-bold text-teal-600 dark:text-teal-400 uppercase tracking-widest bg-teal-500/10 px-2 py-0.5 rounded-full">Added</span>
+                            )}
+                          </div>
+                          <div className="text-foreground font-semibold text-xs sm:text-sm mb-1 transition-colors duration-800">{addon.name}</div>
+                          <div className={clsx(
+                            "font-bold text-xs sm:text-sm transition-colors duration-800",
+                            isAdded ? "text-teal-600 dark:text-teal-400" : "text-purple-600 dark:text-purple-400"
+                          )}>{addon.price}/mo</div>
+                        </button>
+                      );
+                    })}
                   </div>
                 </motion.div>
               )}
