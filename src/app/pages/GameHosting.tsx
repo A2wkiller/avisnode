@@ -608,33 +608,22 @@ export default function GameHosting() {
       toast.error(`${currentGame.name} is currently out of stock.`);
       return;
     }
-    try {
-      const cartItem = {
-        id: crypto.randomUUID(),
-        name: `${currentGame.name} — ${plan.name}`,
-        price: plan.price,
-        gameId: currentGame.id,
-        ram: plan.ram,
-        cpu: plan.cpu,
-        storage: plan.storage,
-        tier: effectiveTier,
-      };
-      const existingCart = JSON.parse(
-        localStorage.getItem("avixnode_cart") || "[]",
-      );
-      localStorage.setItem(
-        "avixnode_cart",
-        JSON.stringify([...existingCart, cartItem]),
-      );
-      toast.success(`${plan.name} added to cart!`, {
-        description: `${currentGame.name} · ${plan.ram} · ${plan.price}/mo`,
-        action: {
-          label: "View Cart",
-          onClick: () => navigate("/cart"),
-        },
-      });
-    } catch {
-      toast.error("Failed to add item to cart.");
+    const slugMap: Record<string, string> = {
+      "Dirt": "Minecraft Dirt Plan",
+      "Stone": "Minecraft Stone Plan",
+      "Iron": "Minecraft Iron Plan",
+      "Coal": "Minecraft Coal Plan",
+      "Copper": "minecraft-copper-plan",
+      "Gold": "minecraft-gold-plan",
+      "Redstone": "minecraft-redstone-plan",
+      "Diamond": "minecraft-diamond-plan",
+      "Netherite": "minecraft-netherite-plan",
+    };
+    const slug = slugMap[plan.name];
+    if (slug) {
+      window.location.href = `https://billing.avixnode.in/products/${encodeURIComponent(slug)}`;
+    } else {
+      toast.error(`${currentGame.name} hosting is coming soon!`);
     }
   };
 
