@@ -609,15 +609,15 @@ export default function GameHosting() {
       return;
     }
     const slugMap: Record<string, string> = {
-  "Dirt": "minecraft-dirt-plan",
-  "Stone": "minecraft-stone-plan",
-  "Iron": "minecraft-iron-plan",
-  "Coal": "minecraft-coal-plan",
-  "Copper": "minecraft-copper-plan",
-  "Gold": "minecraft-gold-plan",
-  "Redstone": "minecraft-redstone-plan",
-  "Diamond": "minecraft-diamond-plan",
-  "Netherite": "minecraft-netherite-plan",
+  "Dirt": "Minecraft/minecraft-dirt-plan",
+  "Stone": "Minecraft/minecraft-stone-plan",
+  "Iron": "Minecraft/minecraft-iron-plan",
+  "Coal": "Minecraft/minecraft-coal-plan",
+  "Copper": "Minecraft/minecraft-copper-plan",
+  "Gold": "Minecraft/minecraft-gold-plan",
+  "Redstone": "Minecraft/minecraft-redstone-plan",
+  "Diamond": "Minecraft/minecraft-diamond-plan",
+  "Netherite": "Minecraft/minecraft-netherite-plan",
 };
     const slug = slugMap[plan.name];
     if (slug) {
