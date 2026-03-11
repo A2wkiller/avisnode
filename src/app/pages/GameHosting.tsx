@@ -609,16 +609,16 @@ export default function GameHosting() {
       return;
     }
     const slugMap: Record<string, string> = {
-      "Dirt": "Minecraft Dirt Plan",
-      "Stone": "Minecraft Stone Plan",
-      "Iron": "Minecraft Iron Plan",
-      "Coal": "Minecraft Coal Plan",
-      "Copper": "minecraft-copper-plan",
-      "Gold": "minecraft-gold-plan",
-      "Redstone": "minecraft-redstone-plan",
-      "Diamond": "minecraft-diamond-plan",
-      "Netherite": "minecraft-netherite-plan",
-    };
+  "Dirt": "minecraft-dirt-plan",
+  "Stone": "minecraft-stone-plan",
+  "Iron": "minecraft-iron-plan",
+  "Coal": "minecraft-coal-plan",
+  "Copper": "minecraft-copper-plan",
+  "Gold": "minecraft-gold-plan",
+  "Redstone": "minecraft-redstone-plan",
+  "Diamond": "minecraft-diamond-plan",
+  "Netherite": "minecraft-netherite-plan",
+};
     const slug = slugMap[plan.name];
     if (slug) {
       window.location.href = `https://billing.avixnode.in/products/${encodeURIComponent(slug)}`;
